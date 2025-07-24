@@ -1,0 +1,28 @@
+/* Style général du header */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+}
+
+/* Logo aligné à gauche */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+/* Liens de navigation */
+.navbar-links a {
+  margin: 0 20px;
+  color: #222;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Optionnel : ajout d’un effet au survol */
+.navbar-links a:hover {
+  color: #555;
+}

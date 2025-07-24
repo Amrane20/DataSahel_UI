@@ -1,0 +1,221 @@
+.traitement-container {
+  font-family: Poppins;
+  background: linear-gradient(135deg, #f0fbfb, #f3f2dd);
+  padding: 40px;
+  min-height: 100vh;
+  width: 1249px;
+}
+
+.stepper {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.step-bar {
+  height: 6px;
+  background: #eaf6f6;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.step-progress {
+  width: 25%;
+  height: 100%;
+  background: #2d9c8c;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.step-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.step-labels label {
+  display: flex;
+  font-family: Poppins;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #000;
+  cursor: default;
+}
+
+.step-labels label input[type="radio"] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  cursor: default;
+}
+
+.step-labels label input[type="radio"]:checked {
+  border-color: #2d9c8c;
+  background-color: #fff;
+}
+
+.step-labels label input[type="radio"]:checked::before {
+  content: "✓";
+  color: #2d9c8c;
+  position: absolute;
+  top: -4px;
+  left: 2px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.step-labels .active {
+  color: #2d9c8c;
+  font-weight: 600;
+}
+
+.file-upload-section {
+  background: #D5E6E480;
+  width: 1200px;
+  gap: 24px;
+  height: 584.5px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.file-upload-section h2 {
+  font-family: Poppins;
+  font-size: 40px;
+  font-style: Bold;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 112.00000000000001%;
+  letter-spacing: -1px;
+  text-align: center;
+  color: #222222;
+}
+
+.instruction {
+  font-family: Lato;
+  font-size: 14px;
+  font-weight: 400px;
+  letter-spacing: 1%;
+  color: #222222;
+  margin-bottom: 48px;
+  text-align: center;
+}
+
+.file-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-group label {
+  font-family: Poppins;
+  font-weight: 500;
+  font-style: Medium;
+  size: 18px;
+  letter-spacing: 0%;
+  line-height: 36px;
+  color: #222222;
+}
+
+.file-group select {
+  padding: 5px;
+  background-color: #E8F2F1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  size: 14px;
+  font-family: Lato;
+  width: 257px;
+  height: 42px;
+}
+
+.edit-btn, .keep-btn, .add-btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: Poppins;
+  font-weight: 500;
+}
+
+.edit-btn {
+  background: #ff9800;
+  color: white;
+}
+
+.keep-btn {
+  background: #757575;
+  color: white;
+}
+
+.add-btn {
+  background: #2d9c8c;
+  color: white;
+}
+
+.condition-rules p {
+  font-family: Poppins;
+  margin: 10px 0;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.highlight {
+  background: #ff9800;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-btn, .next-step-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: Poppins;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.next-step-btn {
+  background: #2d9c8c;
+  color: white;
+}
+
+.ligne{
+    border: 0.25px;
+  width: 1000px;
+  height: 0px;
+  border-top: 1px solid #606060;
+  margin: 20px 0;
+}
+
+.reference-garder{
+  width: 180px;
+}
