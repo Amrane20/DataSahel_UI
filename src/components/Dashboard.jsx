@@ -31,7 +31,7 @@ const cards = [
     // Title of the third card
     title: "Ajouter une colonne avec des règles personnalisées",
     // Description of the third card
-    description: "Créer une nouvelle colonne avec vos propres règles",
+    description: "Vérifiez si une colonne de votre fichier correspond à une base de données",
     // Icon for the third card
     icon: <img src={icon} alt="icon" />,
   },

@@ -1,168 +1,136 @@
 .import-container {
-  font-family: 'Inter', sans-serif;
+  /* font-family: "Inter", sans-serif; */
   background: linear-gradient(135deg, #f0fbfb, #f3f2dd);
-  padding: 40px;
   min-height: 100vh;
-}
-
-.stepper {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 32px;
-}
-
-.step-bar {
-  height: 6px;
-  background: #eaf6f6;
-  border-radius: 3px;
-  margin-bottom: 16px;
-  position: relative;
-}
-
-.step-progress {
-  width: 25%;
-  height: 100%;
-  background: #2d9c8c;
-  border-radius: 3px;
-  transition: width 0.3s ease;
-}
-
-.step-labels {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
-}
-
-.step-labels label {
-  display: flex;
-  font-family: Poppins;
-  align-items: center;
-  gap: 6px;
-  font-weight: 500;
-  font-size: 14px;
-  color: #000;
-  cursor: default;
-}
-
-.step-labels label input[type="radio"] {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #000;
-  border-radius: 50%;
-  display: inline-block;
-  position: relative;
-  cursor: default;
-}
-
-.step-labels label input[type="radio"]:checked {
-  border-color: #2d9c8c;
-  background-color: #fff;
-}
-
-.step-labels label input[type="radio"]:checked::before {
-  content: "✓";
-  color: #2d9c8c;
-  position: absolute;
-  top: -4px;
-  left: 2px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.step-labels .active {
-  color: #2d9c8c;
-  font-weight: 600;
-  
+  background-image: url(/src/assets/metch-bg.svg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 24px 96px;
 }
 
 .upload-sections {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
+  /* background-image: url("../assets/metch-bg.svg"); 
+  background-size: cover;          
+  background-position: center;     
+  background-repeat: no-repeat;   
+  border-radius: 8px;             */
 }
 
 .upload-card {
   flex: 1;
-  width: 612.5px;
-  height: 669px;
-  background: #D5E6E480;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  width: 540px;
+  display: flex;
+  flex-direction: column;
+  /* background: #d5e6e480; */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   border: 1px solid #606060;
+  padding-bottom: 24px;
+  padding-top: 24px;
 }
 
-.upload-card h2 {
-  font-size: 20px;
-  font-family: poppins;
-  font-weight: 700;
-  margin-bottom: 4px;
-  margin-left: 40px;
+/* .upload-card h2 {
+  font-size: 24px !important;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  color: #222222;
+  letter-spacing: -1px !important;
+  line-height: 36px !important;
+  margin-left: 48px !important;
+} */
+
+.upload-card .card-title {
+  font-size: 24px !important;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  color: #222222;
+  letter-spacing: -1px !important;
+  line-height: 36px !important;
+  margin-left: 48px !important;
+  margin: 0;
 }
 
+.upload-card .drop-zone-txt {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.5px;
+}
 
 .upload-card h4 {
-    font-family: Poppins;
-    margin-left: 40px;
+  font-family: "Poppins", sans-serif;
+  margin-left: 40px;
 }
 
-.upload-card p {
-    color: #555;
-    font-weight: 400;
-  font-family: Lato;
-  size: 14px;
-  margin-left: 40px;
+.upload-card .pfichiersR {
+  margin-left: 48px;
+  font-family: "Lato", sans-serif;
+  font-size: 14px !important;
+  line-height: 22px !important;
+  letter-spacing: 1px;
+  color: #222222 !important;
+  margin-top: 0px;
 }
 
 .upload-card .ref-count {
   margin-bottom: 50px;
-  margin-left: 40px;
+  margin-left: 48px;
+  margin-top: -81px;
 }
 
-.pfichiersR{
-    color: #555;
-    font-weight: 400;
+.pfichiersR {
+  color: #555;
+  font-weight: 400;
   font-family: Lato;
   size: 14px;
   margin-bottom: 99px;
 }
 
 .drop-zone {
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  width: 504px;
+  border: 1px dashed #606060;
+  border-radius: 8px;
+  /* width: 504px; */
   min-height: 276px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-left: 48px;
+  margin-right: 48px;
   margin-bottom: 24px;
-  background: radial-gradient(circle at 40% 60%, #eaf6f6 60%, #fff 100%);
   text-align: center;
 }
 
 .drop-zone span {
-  color: #2d9c8c;
-  font-weight: 600;
+  color: #1d7874;
+  font-weight: bold;
 }
 
+.upload-icon {
+  width: 36px;
+  height: 36px;
+  display: block;
+  margin-bottom: -24px;
+}
+
+/* Replace your old rule with this one */
 .upload-icon::before {
   content: url("../assets/download.svg");
-  font-size: 32px;
-  color: #2d9c8c;
-  margin-bottom: 8px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #1d7874;
 }
 
 .btn-upload {
   width: 129px;
-  padding: 10px 0;
+  padding: 16px 0;
   border-radius: 8px;
-  margin-left: 430px;
-  margin-bottom: 20px;
+  margin-left: 382px;
   border: none;
   background: #2d9c8c;
   color: #fff;
@@ -179,27 +147,45 @@
 .uploaded .file {
   display: flex;
   align-items: center;
-  width: 516.5px;
-  margin-left: 30px;
-  gap: 8px;
-  padding: 8px 1px;
-  background: #E8F2F180;
-  border: 1px solid #ddd;
+  /* width: 516.5px; */
+  height: 48px;
+  margin-left: 48px;
+  margin-right: 48px;
+  gap: 12px;
+  padding: 16px 24px;
+  border: 1px solid #e8f2f1;
   border-radius: 8px;
+  margin-bottom: 24px;
+  background: #e8f2f1;
+}
+
+.file-icon {
+  width: 30px;
+  height: 30px;
 }
 
 .file-icon::before {
-  content: url('../assets/Fichier.svg');
-  font-size: 20px;
+  content: url("../assets/Fichier.svg");
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .file-name {
   flex: 1;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: -0.5px;
+  font-weight: 500;
+  color: #222222;
 }
 
 .file-size {
-  color: #777;
-  font-size: 13px;
+  color: #222222;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Lato", sans-serif;
+  margin-top: 4px;
 }
 
 .btn-delete {
@@ -221,22 +207,24 @@
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  border: 1px solid #6F6F6F;
-  background: #fff;
-  color: #6F6F6F;
-  font-weight: 600;
+  border: 1px solid #6f6f6f;
+  /* background: #fff; */
+  color: #6f6f6f;
+  font-weight: 500;
   cursor: pointer;
   transition: 0.2s;
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
 }
 
 .ref-btn.selected {
-  color: #6F6F6F;
+  color: #6f6f6f;
 }
 
 .footer-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 40px;
+  margin-top: 88px;
   gap: 24px;
   flex-wrap: wrap;
 }
@@ -246,7 +234,7 @@
   padding: 14px 0;
   border-radius: 8px;
   border: 2px solid #2d9c8c;
-  background: #fff;
+  background: transparent;
   color: #2d9c8c;
   font-weight: 600;
   font-size: 18px;
@@ -267,4 +255,47 @@
 
 .btn-primary:hover {
   background: #21867a;
+}
+
+/* FileImport.css */
+
+/* Style for the selected reference count button */
+.ref-btn.selected {
+  border-color: #00a78e; /* A green border to show selection */
+  border-width: 2px;
+}
+
+/* Style for the disabled drop-zone and buttons */
+.drop-zone.disabled,
+.btn-upload:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Style for the "Next" button when it is disabled */
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* FileImport.css */
+
+.uploaded {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  margin-top: 48px;
+}
+
+.uploaded h4 {
+  margin-left: 48px;
+  margin-bottom: 8px;
+}
+
+.file-details {
+  flex-grow: 1; /* Allows this element to take up the available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically centers the text block */
 }

@@ -1,125 +1,297 @@
-// Import React and useState hook
-import React, { useState } from "react";
-// Import external CSS for styling
+// src/components/Traitement.jsx
+
+import React, { useState, useEffect } from "react";
 import "../css/Traitement.css";
+import Stepper from "./Stepper";
 
-// Define the Traitement component, receiving onBack and onNext as props
-function Traitement({ onBack, onNext }) {
-  // State to store the main file selected by the user
-  const [mainFile, setMainFile] = useState(null);
-  // State to store the reference file selected by the user
-  const [referenceFile, setReferenceFile] = useState(null);
+// We receive onBack and onNext from the parent component
+function Traitement({ onBack, onNext, sessionId }) {
+  const [columnsData, setColumnsData] = useState(null);
+  // State for the list of rules the user has added
+  const [rulesList, setRulesList] = useState([]);
+  // State for the single rule currently being built in the dropdowns
+  const [currentRule, setCurrentRule] = useState({
+    main_column: "",
+    primary_condition: "IS_EMPTY",
+    comparison_operator: "DIFFERENT", // Add this line with a default
+    reference_column: "",
+    action: "REPLACE",
+  });
 
-  // Function triggered when the user selects the main file
-  const handleMainFileChange = (e) => {
-    setMainFile(e.target.files[0]); // Update mainFile state with selected file
+  // This one constant replaces the two old ones.
+  const combinedConditions = [
+    { label: "Est Vide", value: "IS_EMPTY" },
+    {
+      label: "N'est Pas Vide et est Différente de",
+      value: "IS_NOT_EMPTY__DIFFERENT",
+    },
+    { label: "N'est Pas Vide et est Égale à", value: "IS_NOT_EMPTY__MATCH" },
+  ];
+
+  const actions = [
+    { label: "Remplacer la valeur", value: "REPLACE" },
+    { label: "Garder la valeur", value: "KEEP" },
+  ];
+
+  // Add this new function inside your Traitement component.
+  const handleConditionChange = (value) => {
+    const newRule = { ...currentRule };
+
+    // Check if the value contains our separator "__"
+    if (value.includes("__")) {
+      const parts = value.split("__");
+      newRule.primary_condition = parts[0]; // e.g., "IS_NOT_EMPTY"
+      newRule.comparison_operator = parts[1]; // e.g., "DIFFERENT"
+    } else {
+      // This handles the simple "IS_EMPTY" case
+      newRule.primary_condition = value;
+      delete newRule.comparison_operator; // Remove the operator if it's not needed
+    }
+
+    setCurrentRule(newRule);
   };
 
-  // Function triggered when the user selects the reference file
-  const handleReferenceFileChange = (e) => {
-    setReferenceFile(e.target.files[0]); // Update referenceFile state with selected file
+  const handleSimpleChange = (field, value) => {
+    setCurrentRule((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Component render
+  useEffect(() => {
+    const fetchColumns = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/columns/${sessionId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch columns.");
+        const data = await response.json();
+        setColumnsData(data);
+        console.log("Fetched Columns for Rule Builder:", data);
+      } catch (error) {
+        alert("Error fetching column data.");
+      }
+    };
+    fetchColumns();
+  }, [sessionId]);
+
+  // Add this function inside your Traitement component
+
+  const handleAddRule = () => {
+    // Basic validation to make sure columns are selected
+    if (!currentRule.main_column || !currentRule.reference_column) {
+      alert("Please select a column for both the main and reference file.");
+      return;
+    }
+
+    // Add the current rule to our list of rules
+    setRulesList((prevList) => [...prevList, currentRule]);
+
+    // Optional: Reset the current rule builder for the next rule
+    setCurrentRule({
+      main_column: "",
+      primary_condition: "IS_EMPTY",
+      reference_column: "",
+      action: "REPLACE",
+    });
+  };
+
+  // Replace your old handleConfigureRules function with this one
+
+  const handleSaveAndExecute = async () => {
+    if (rulesList.length === 0) {
+      alert("Please add at least one rule before proceeding.");
+      return;
+    }
+
+    const rulesConfig = {
+      session_id: sessionId,
+      rules: rulesList,
+    };
+
+    try {
+      // --- Step 1: Save the rules ---
+      const rulesResponse = await fetch(
+        "http://127.0.0.1:8000/configure/rules",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(rulesConfig),
+        }
+      );
+
+      if (!rulesResponse.ok) throw new Error("Failed to save the rules.");
+      console.log("Rules saved successfully.");
+
+      // --- Step 2: Start the execution ---
+      const executeResponse = await fetch(
+        `http://127.0.0.1:8000/execute-comparison/${sessionId}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (!executeResponse.ok)
+        throw new Error("Failed to start the execution.");
+      console.log("Execution started successfully.");
+
+      // --- Step 3: Go to the next page ---
+      onNext();
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  if (!columnsData) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="traitement-container"> {/* Main container */}
-      
-      <div className="stepper"> {/* Stepper section for progress tracking */}
-        <div className="step-bar"> {/* Progress bar container */}
-          <div className="step-progress" style={{ width: "66%" }} /> {/* Progress bar filled 66% */}
+    <div className="traitement-container">
+      <Stepper currentStep={3} />
+
+      <div className="file-upload-section">
+        {/* Main Title and Subtitle */}
+        <div className="page-header">
+          <h2>
+            Dites-nous ce que vous voulez <br /> faire avec vos données
+          </h2>
+          <p className="instruction">
+            Plus besoin de formules compliquées ou de copier-coller pendant des
+            heures. <br />
+            Avec DataSahel, vous appliquez vos règles simplement, en quelques
+            clics.
+          </p>
+
+          <div className="rule-builder">
+            <div className="rule-part">
+              <label>Fichier Principal</label>
+              <select
+                value={currentRule.main_column}
+                onChange={(e) =>
+                  handleSimpleChange("main_column", e.target.value)
+                }
+              >
+                <option value="" disabled>
+                  -- Colonne principale --
+                </option>
+                {columnsData.main_file_columns.map((col) => (
+                  <option key={col} value={col}>
+                    {col}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="rule-part">
+              <label>Condition</label>
+              <select
+                // This creates the combined value for the state to read
+                value={`${currentRule.primary_condition}${
+                  currentRule.comparison_operator
+                    ? "__" + currentRule.comparison_operator
+                    : ""
+                }`}
+                onChange={(e) => handleConditionChange(e.target.value)}
+              >
+                {combinedConditions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="rule-part">
+              <label>Fichier de référence</label>
+              <select
+                value={currentRule.reference_column}
+                onChange={(e) =>
+                  handleSimpleChange("reference_column", e.target.value)
+                }
+              >
+                <option value="" disabled>
+                  -- Colonne de référence --
+                </option>
+                {Object.values(columnsData.reference_files_columns)[0].map(
+                  (col) => (
+                    <option key={col} value={col}>
+                      {col}
+                    </option>
+                  )
+                )}
+              </select>
+            </div>
+
+            <div className="rule-part">
+              <label>Action</label>
+              <select
+                value={currentRule.action}
+                onChange={(e) => handleSimpleChange("action", e.target.value)}
+              >
+                {actions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <button className="add-btn" onClick={handleAddRule}>
+              Ajouter
+            </button>
+          </div>
         </div>
 
-        <div className="step-labels"> {/* Labels for steps */}
-          <label className="active"> {/* Step 1: active */}
-            <input type="radio" checked readOnly /> {/* Checked radio input */}
-            Importation des fichiers {/* Step label text */}
-          </label>
-          <label className="active"> {/* Step 2: active */}
-            <input type="radio" checked readOnly />
-            Sélection des colonnes
-          </label>
-          <label> {/* Step 3: not active */}
-            <input type="radio" disabled readOnly /> {/* Disabled radio input */}
-            Traitement
-          </label>
-          <label> {/* Step 4: not active */}
-            <input type="radio" disabled readOnly />
-            Téléchargement
-          </label>
+        {/* This will be the list of rules the user adds */}
+        {/* This will be the list of rules the user adds */}
+        <div className="rules-list">
+          {rulesList.map((rule, index) => (
+            <div className="rule-item" key={index}>
+              <span>Si la valeur de</span>
+              <span>"{rule.main_column}"</span>
+              <span className="highlight">
+                {
+                  (
+                    combinedConditions.find(
+                      (c) =>
+                        c.value ===
+                        `${rule.primary_condition}${
+                          rule.comparison_operator
+                            ? "__" + rule.comparison_operator
+                            : ""
+                        }`
+                    ) || {}
+                  ).label
+                }
+              </span>
+
+              <span>qu'elle existe dans</span>
+
+              {/* This displays the real reference filename */}
+              <span>
+                "{Object.keys(columnsData.reference_files_columns)[0]}"
+              </span>
+
+              <span>alors</span>
+
+              {/* This finds and displays the action text */}
+              <span className="highlight">
+                {(actions.find((a) => a.value === rule.action) || {}).label}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="file-upload-section"> {/* Section for uploading files and rule configuration */}
-        <h2>Dites-nous ce que vous voulez <br /> faire avec vos données</h2> {/* Section title */}
-        
-        <p className="instruction"> {/* Instruction text */}
-          Plus de formules compliquées ou de copier-coller pendant des heures. <br />
-          Avec DataShel, vous appliquez vos règles simples en quelques clics.
-        </p>
-
-        <div className="file-inputs"> {/* Container for file and rule inputs */}
-          <div className="file-group"> {/* Group of file selectors and actions */}
-            <label>Main_File.xlsx</label> {/* Label for main file */}
-            
-            {/* Dropdown for main file selection (example option) */}
-            <select
-              value={mainFile ? mainFile.name : "Pipe_id_Rif_..."}
-              onChange={handleMainFileChange}
-            >
-              <option value="Pipe_id_Rif_...">Pipe_id_Rif_...</option>
-            </select>
-
-            {/* Another dropdown for selecting a column from main file */}
-            <select
-              value={mainFile ? mainFile.name : "Est Vide"}
-              onChange={handleMainFileChange}
-            >
-              <option value="Pipe_id_Rif_...">Est Vide</option>
-            </select>
-
-            {/* Empty option (but not inside select!) – likely misplaced */}
-            <option value="">Est Vide</option>
-
-            {/* Reference file label */}
-            <label htmlFor="">Reference_one.xlsx</label>
-
-            {/* Dropdown for selecting column from reference file */}
-            <select
-              value={referenceFile ? referenceFile.name : "Pipe_id_Rif_..."}
-              onChange={handleReferenceFileChange}
-            >
-              <option value="Pipe_id_Rif_...">Pipe_id_Rif_...</option>
-            </select>
-
-            {/* Action buttons */}
-            <button className="keep-btn">Garder la valeur</button> {/* Keep value button */}
-            <button className="add-btn">Ajouter</button> {/* Add rule button */}
-          </div>
-
-          <hr className="ligne" /> {/* Horizontal line separator */}
-
-          <div className="condition-rules"> {/* Section to show rule examples */}
-            <p>
-              Si la valeur de <span className="highlight">pipe_id</span> est vide dans{" "}
-              <span className="highlight">main.xlsx</span> et qu'elle existe dans{" "}
-              <span className="highlight">Reference_one.xlsx</span>, alors mettez-la à jour.
-            </p>
-            <p>
-              Si la valeur de <span className="highlight">pipe_id</span> est vide dans{" "}
-              <span className="highlight">main.xlsx</span> et qu'elle existe dans{" "}
-              <span className="highlight">Reference_one.xlsx</span>, alors mettez-la à jour.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="footer-buttons"> {/* Footer with navigation buttons */}
-        <button className="btn-secondary" onClick={onBack}>Annulr l’action</button> {/* Cancel button */}
-        <button className="btn-primary" onClick={onNext}>Étape Suivante</button> {/* Next step button */}
+      {/* Footer Buttons */}
+      <div className="footer-buttons">
+        <button className="btn-secondary" onClick={onBack}>
+          Annuler L'action
+        </button>
+        <button className="btn-primary" onClick={handleSaveAndExecute}>
+          Étape Suivante
+        </button>
       </div>
     </div>
   );
 }
 
-// Export the component for use in other files
 export default Traitement;

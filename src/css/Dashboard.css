@@ -2,7 +2,7 @@
   font-family: 'Inter', Arial, sans-serif;
   background: radial-gradient(circle at 20% 30%, #eaf6f6 30%, #f3f2dd 70%);
   min-height: 100vh;
-  padding: 24px;
+  padding: 64px;
   box-shadow: #D5E6E480 0px 0px 10px;
   backdrop-filter: blur(2px);
   border-radius: 2.5px;
@@ -14,11 +14,12 @@
 }
 
 .dashboard-title {
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 40px;
-  color: #222;
-  font-family: 'Poppins';
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 48px;
+  color: #222222;
+  font-family: 'Poppins', sans-serif;
+  line-height: 44px;
 }
 
 .card-wrapper {
@@ -29,8 +30,8 @@
 
 .card {
   background: #FAFAFA1A;
-  border-radius: 12px ;
-  padding: 20px;
+  border-radius: 8px ;
+  padding: 24px;
   box-shadow: #D5E6E480 10px 10px 10px;
   width: 400px;
   border: 2.5px solid #fff;
@@ -53,42 +54,53 @@
   align-items: center;
 }
 
-.card-icon {
+/* .card-icon {
   margin-bottom: 94px;
+} */
+
+.card-icon img {
+  width: 64px;
+  height: 64px;
+  padding: 72px;
 }
 
+
 .card-title {
-  font-family: 'Poppins';
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0;
-  margin-bottom: 12px;
-  color: #222;
+  font-family: 'Poppins', sans-serif;
+  font-size: 24px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  color: #222222;
   text-align: left;
   width: 352px;
+  font-weight: bold;
+  letter-spacing: -0.5px;
+  line-height: 36px;
 }
 
 .card-description {
-  font-family: 'Lato';
-  font-weight: 400;
+  font-family: 'Lato', sans-serif;
   font-size: 18px;
-  color: #444;
+  color: #222222;
   margin: 0;
   text-align: left;
   width: 352px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
 .card-button {
-  margin-top: 20px;
-  font-family: Poppins;
-  width: 100%;
-  padding: 12px 0;
-  border-radius: 8px;
-  border: 1px solid #080808;
-  background: #fff;
-  color: #080808;
+  margin-top: 72px;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  width: 100%;
+  padding: 20px ;
+  border-radius: 8px;
+  border: 1px solid #222222;
+  background: #fff;
+  color: #222222;
   cursor: pointer;
   transition: background 0.3s ease;
 }
