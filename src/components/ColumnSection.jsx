@@ -42,7 +42,7 @@ function ColumnSection({ onBack, onNext, sessionId }) {
     const fetchColumns = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/columns/${sessionId}`
+          `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/columns/${sessionId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch columns.");
@@ -71,7 +71,7 @@ function ColumnSection({ onBack, onNext, sessionId }) {
 
     try {
       // 2. Send the data to the /configure/keys endpoint
-      const response = await fetch("http://127.0.0.1:8000/configure/keys", {
+      const response = await fetch("https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/configure/keys", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,7 @@ function ColumnSection({ onBack, onNext, sessionId }) {
       console.log("Keys configured successfully:", result);
 
       // 3. If successful, proceed to the next page
-      onNext();
+      onNext(mainFileKey, refFileKeys);
     } catch (error) {
       console.error("Error saving keys:", error);
       alert("Could not save the key column configuration. Please try again.");

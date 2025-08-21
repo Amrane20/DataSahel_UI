@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/Traitement.css";
 import Stepper from "./Stepper";
+import DeletIcon from "../assets/delete_icon.svg";
 
 // We receive onBack and onNext from the parent component
 function Traitement({ onBack, onNext, sessionId }) {
@@ -59,7 +60,7 @@ function Traitement({ onBack, onNext, sessionId }) {
     const fetchColumns = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/columns/${sessionId}`
+          `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/columns/${sessionId}`
         );
         if (!response.ok) throw new Error("Failed to fetch columns.");
         const data = await response.json();
@@ -80,7 +81,6 @@ function Traitement({ onBack, onNext, sessionId }) {
       alert("Please select a column for both the main and reference file.");
       return;
     }
-
     // Add the current rule to our list of rules
     setRulesList((prevList) => [...prevList, currentRule]);
 
@@ -92,6 +92,11 @@ function Traitement({ onBack, onNext, sessionId }) {
       action: "REPLACE",
     });
   };
+
+  const handleDeleteRule = (indexToDelete) => {
+    setRulesList(prevList => prevList.filter((_, index) => index !== indexToDelete));
+  };
+
 
   // Replace your old handleConfigureRules function with this one
 
@@ -109,7 +114,7 @@ function Traitement({ onBack, onNext, sessionId }) {
     try {
       // --- Step 1: Save the rules ---
       const rulesResponse = await fetch(
-        "http://127.0.0.1:8000/configure/rules",
+        "https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/configure/rules",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -122,7 +127,7 @@ function Traitement({ onBack, onNext, sessionId }) {
 
       // --- Step 2: Start the execution ---
       const executeResponse = await fetch(
-        `http://127.0.0.1:8000/execute-comparison/${sessionId}`,
+        `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/execute-comparison/${sessionId}`,
         {
           method: "POST",
         }
@@ -240,45 +245,48 @@ function Traitement({ onBack, onNext, sessionId }) {
           </div>
         </div>
 
-        {/* This will be the list of rules the user adds */}
-        {/* This will be the list of rules the user adds */}
         <div className="rules-list">
-          {rulesList.map((rule, index) => (
-            <div className="rule-item" key={index}>
-              <span>Si la valeur de</span>
-              <span>"{rule.main_column}"</span>
-              <span className="highlight">
-                {
-                  (
-                    combinedConditions.find(
-                      (c) =>
-                        c.value ===
-                        `${rule.primary_condition}${
-                          rule.comparison_operator
-                            ? "__" + rule.comparison_operator
-                            : ""
-                        }`
-                    ) || {}
-                  ).label
-                }
-              </span>
+  {rulesList.map((rule, index) => (
+    <div className="rule-item" key={index}>
+      {/* --- This is the sentence part (no changes needed) --- */}
+      <div className="display"> {/* Added a wrapper for better layout */}
+        <span>Si la valeur de</span>
+        <span className="highlight">"{rule.main_column}"</span>
+        <span>
+          {(
+            combinedConditions.find(
+              (c) =>
+                c.value ===
+                `${rule.primary_condition}${
+                  rule.comparison_operator
+                    ? "__" + rule.comparison_operator
+                    : ""
+                }`
+            ) || {}
+          ).label}
+        </span>
+        <span>dans</span>
+        <span className="highlight">"{columnsData.main_file_name}"</span>
+        <span>et qu'elle existe dans</span>
+        <span className="highlight">
+          "{Object.keys(columnsData.reference_files_columns)[0]}"
+        </span>
+        <span>, alors</span>
+        <span className="highlight">
+          {(actions.find((a) => a.value === rule.action) || {}).label}
+        </span>
+      </div>
 
-              <span>qu'elle existe dans</span>
+      {/* --- ADD THIS BUTTON --- */}
+      <button className="btn-delete" onClick={() => handleDeleteRule(index)}>
+        <img src={DeletIcon} alt="Delete Rule" />
+      </button>
+    </div>
+  ))}
+</div>
 
-              {/* This displays the real reference filename */}
-              <span>
-                "{Object.keys(columnsData.reference_files_columns)[0]}"
-              </span>
 
-              <span>alors</span>
 
-              {/* This finds and displays the action text */}
-              <span className="highlight">
-                {(actions.find((a) => a.value === rule.action) || {}).label}
-              </span>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Footer Buttons */}

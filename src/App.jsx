@@ -1,105 +1,100 @@
-// Import React and the useState hook
-import React, { useState } from "react";
+// App.jsx (Updated for Multiple Services)
 
-// Import all necessary components
+import React, { useState } from "react";
 import Dashboard from "./components/Dashboard.jsx";
 import FileImport from "./components/FileImport.jsx";
 import ColumnSection from "./components/ColumnSection.jsx";
-import Traitement from "./components/Traitement.jsx"; // ✅ Imported here
-import Navbar from "./components/Navbar.jsx";
+import Traitement from "./components/Traitement.jsx";
 import StatusPage from "./components/StatusPage.jsx";
+import CreateColumnPage from "./components/CreateColumnPage.jsx"; // 1. Import the new component
+import Navbar from "./components/Navbar.jsx";
 
-// Main App component
 function App() {
-  // State to track which item is selected (e.g. a project or card index)
   const [selected, setSelected] = useState(null);
-
-  // State to control which view/page is being displayed
   const [view, setView] = useState("dashboard");
+  const [selectedService, setSelectedService] = useState(null);
 
-  // Called when the user clicks "Commencer-btn" in the dashboard
-  const handleStart = async () => {
-    console.log("sarting a new session...");
+  const [mainKey, setMainKey] = useState(null);
+  const [refKeys, setRefKeys] = useState(null);
 
+  // 3. Update handleStart to accept and store the service ID
+  const handleStart = async (serviceId) => {
+    setSelectedService(serviceId);
+    
     try {
       const response = await fetch("http://127.0.0.1:8000/start-session");
-
-      if (!response.ok) {
-        throw new Error("Failed to start session on the server.");
-      }
-
+      if (!response.ok) throw new Error("Failed to start session.");
       const data = await response.json();
-      const newSessionId = data.session_id;
-      console.log("session started successfully! Session_Id:", newSessionId);
-
-      setSelected(newSessionId);
+      setSelected(data.session_id);
       setView("fileImport");
     } catch (error) {
-      console.log("Error Starting session:", error);
-      alert("Could not Start a new session. please try again later.");
+      alert("Could not start a new session.");
     }
   };
 
-  // Called to return to the dashboard from file import
   const handleBack = () => {
-    setSelected(null); // Reset selection
-    setView("dashboard"); // Go back to dashboard
+    setSelected(null);
+    setSelectedService(null);
+    setMainKey(null); 
+    setRefKeys(null); 
+    setView("dashboard");
   };
 
-  // Called to move from file import to column selection
-  const handleStepNext = () => {
-    setView("columnSection");
-  };
+  const handleStepNext = () => setView("columnSection");
+  const handleBackToFileImport = () => setView("fileImport");
 
-  // Called to go back from column section to file import
-  const handleBackToFileImport = () => {
-    setView("fileImport");
+  // 4. This new function intelligently navigates to the correct page
+  const handleColumnSelectionNext = (mainFileKey, refFileKeys) => {
+    setMainKey(mainFileKey); 
+    setRefKeys(refFileKeys); 
+    if (selectedService === 'ruleBuilder') {
+      setView("traitement");
+    } else if (selectedService === 'createColumn') {
+      setView("createColumnPage");
+    }
   };
+  
+  const handleGoToStatus = () => setView("statusPage");
 
-  // Called to move from column section to traitement
-  const handleStepToTraitement = () => {
-    setView("traitement");
-  };
-
-  const handleGoToStatus = () => {
-    setView("statusPage");
-  };
-
-  // Render different components depending on the current view
   return (
     <div>
-      {/* Top navigation bar */}
       <Navbar onNavigate={(target) => setView(target)} />
 
-      {/* Show dashboard if nothing is selected */}
-      {view === "dashboard" && selected === null && (
+      {view === "dashboard" && (
         <Dashboard onStart={handleStart} />
       )}
-
-      {/* Show file import if something is selected */}
-      {view === "fileImport" && selected !== null && (
+      
+      {view === "fileImport" && (
         <FileImport
           onBack={handleBack}
           onNext={handleStepNext}
           sessionId={selected}
         />
       )}
-
-      {/* Show column selection */}
+      
       {view === "columnSection" && (
         <ColumnSection
           onBack={handleBackToFileImport}
-          onNext={handleStepToTraitement} // ✅ Called when user proceeds to next step
+          onNext={handleColumnSelectionNext} 
           sessionId={selected}
         />
       )}
-
-      {/* Show traitement step */}
+      
       {view === "traitement" && (
         <Traitement
           sessionId={selected}
           onNext={handleGoToStatus}
-          onBack={() => setView("columnSection")} // It's good to add the back button logic too
+          onBack={() => setView("columnSection")}
+        />
+      )}
+
+      {view === "createColumnPage" && (
+        <CreateColumnPage
+          sessionId={selected}
+          mainFileKey={mainKey}
+          refFileKeys={refKeys}
+          onNext={handleGoToStatus}
+          onBack={() => setView("columnSection")}
         />
       )}
 
@@ -108,5 +103,4 @@ function App() {
   );
 }
 
-// Export the App component
 export default App;

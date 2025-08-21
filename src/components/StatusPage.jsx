@@ -2,41 +2,36 @@
 
 import React, { useState, useEffect } from "react";
 import Stepper from "./Stepper";
-import "../css/StatusPage.css"; // We will create this file next
+import "../css/StatusPage.css";
 
 function StatusPage({ sessionId }) {
-  // State to store the job status and results from the API
   const [jobStatus, setJobStatus] = useState("processing");
   const [results, setResults] = useState(null);
 
   useEffect(() => {
-    // This timer will call the API every 3 seconds
     const intervalId = setInterval(() => {
       const checkStatus = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/status/${sessionId}`);
+          const response = await fetch(`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/status/${sessionId}`);
           if (!response.ok) throw new Error("Could not fetch status.");
           
           const data = await response.json();
 
-          // When the job is done, update the state and stop the timer
           if (data.status === "completed") {
             setJobStatus("completed");
             setResults(data.results);
-            clearInterval(intervalId); // Stop checking
+            clearInterval(intervalId);
           }
         } catch (error) {
           console.error(error);
-          clearInterval(intervalId); // Stop checking on error
+          clearInterval(intervalId);
         }
       };
-
       checkStatus();
-    }, 3000); // Check every 3 seconds
+    }, 3000);
 
-    // Cleanup function to stop the timer if the user navigates away
     return () => clearInterval(intervalId);
-  }, [sessionId]); // Rerun if sessionId changes
+  }, [sessionId]);
 
   return (
     <div className="status-container">
@@ -47,27 +42,41 @@ function StatusPage({ sessionId }) {
           <>
             <h2>Traitement en cours...</h2>
             <p>Your files are being processed. This might take a few moments.</p>
-            <div className="loader"></div> {/* Simple loading spinner */}
+            <div className="loader"></div>
           </>
         ) : (
           <>
             <h2>Traitement terminé !</h2>
             <p>Your files are ready for download.</p>
             <div className="download-links">
-              {/* Link to download the full output file */}
-              <a 
-                href={`http://127.0.0.1:8000/download/${sessionId}/${results.full_output}`}
-                className="download-button"
-              >
-                Télécharger le fichier complet
-              </a>
-              {/* Link to download the summary report */}
-              <a 
-                href={`http://127.0.0.1:8000/download/${sessionId}/${results.summary_report}`}
-                className="download-button summary"
-              >
-                Télécharger le résumé des changements
-              </a>
+              {/* --- NEW: Smart Download Links --- */}
+              {/* This checks for the results of the FIRST service */}
+              {results?.full_output && (
+                <a 
+                  href={`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/download/${sessionId}/${results.full_output}`}
+                  className="download-button"
+                >
+                  Télécharger le fichier complet
+                </a>
+              )}
+              {results?.summary_report && (
+                <a 
+                  href={`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/download/${sessionId}/${results.summary_report}`}
+                  className="download-button summary"
+                >
+                  Télécharger le résumé des changements
+                </a>
+              )}
+
+              {/* This checks for the result of the NEW service */}
+              {results?.output_file && (
+                <a 
+                  href={`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/download/${sessionId}/${results.output_file}`}
+                  className="download-button"
+                >
+                  Télécharger le fichier de sortie
+                </a>
+              )}
             </div>
           </>
         )}
