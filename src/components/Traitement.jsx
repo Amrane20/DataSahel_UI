@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import "../css/Traitement.css";
 import Stepper from "./Stepper";
 import DeletIcon from "../assets/delete_icon.svg";
-import { API_URL } from "./apiConfig"; 
+// import { API_URL } from "./apiConfig"; 
 
 // We receive onBack and onNext from the parent component
 function Traitement({ onBack, onNext, sessionId }) {
@@ -61,7 +61,7 @@ function Traitement({ onBack, onNext, sessionId }) {
     const fetchColumns = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/columns/${sessionId}`
+          `https://datasahel-api.onrender.com/columns/${sessionId}`
         );
         if (!response.ok) throw new Error("Failed to fetch columns.");
         const data = await response.json();
@@ -115,7 +115,7 @@ function Traitement({ onBack, onNext, sessionId }) {
     try {
       // --- Step 1: Save the rules ---
       const rulesResponse = await fetch(
-        "${API_URL}/configure/rules",
+        "https://datasahel-api.onrender.com/configure/rules",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -128,7 +128,7 @@ function Traitement({ onBack, onNext, sessionId }) {
 
       // --- Step 2: Start the execution ---
       const executeResponse = await fetch(
-        `${API_URL}/execute-comparison/${sessionId}`,
+        `https://datasahel-api.onrender.com/execute-comparison/${sessionId}`,
         {
           method: "POST",
         }

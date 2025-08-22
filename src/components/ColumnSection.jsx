@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 // Importing the CSS file that styles the ColumnSection component
 import "../css/ColumnSection.css";
 import Stepper from "./Stepper";
-import { API_URL } from "./apiConfig";
+// import { API_URL } from "./apiConfig";
 
 // Functional component definition, taking onBack and onNext as props
 function ColumnSection({ onBack, onNext, sessionId }) {
@@ -43,7 +43,7 @@ function ColumnSection({ onBack, onNext, sessionId }) {
     const fetchColumns = async () => {
       try {
         const response = await fetch(
-          `${API_URL}/columns/${sessionId}`
+          `$https://datasahel-api.onrender.com/columns/${sessionId}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch columns.");
@@ -72,7 +72,7 @@ function ColumnSection({ onBack, onNext, sessionId }) {
 
     try {
       // 2. Send the data to the /configure/keys endpoint
-      const response = await fetch(`${API_URL}/configure/keys`, {
+      const response = await fetch(`$https://datasahel-api.onrender.com/configure/keys`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
