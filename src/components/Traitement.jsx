@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import "../css/Traitement.css";
 import Stepper from "./Stepper";
 import DeletIcon from "../assets/delete_icon.svg";
+import { API_URL } from "../apiConfig"; 
 
 // We receive onBack and onNext from the parent component
 function Traitement({ onBack, onNext, sessionId }) {
@@ -60,7 +61,7 @@ function Traitement({ onBack, onNext, sessionId }) {
     const fetchColumns = async () => {
       try {
         const response = await fetch(
-          `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/columns/${sessionId}`
+          `${API_URL}/columns/${sessionId}`
         );
         if (!response.ok) throw new Error("Failed to fetch columns.");
         const data = await response.json();
@@ -114,7 +115,7 @@ function Traitement({ onBack, onNext, sessionId }) {
     try {
       // --- Step 1: Save the rules ---
       const rulesResponse = await fetch(
-        "https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/configure/rules",
+        "${API_URL}/configure/rules",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -127,7 +128,7 @@ function Traitement({ onBack, onNext, sessionId }) {
 
       // --- Step 2: Start the execution ---
       const executeResponse = await fetch(
-        `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/execute-comparison/${sessionId}`,
+        `${API_URL}/execute-comparison/${sessionId}`,
         {
           method: "POST",
         }

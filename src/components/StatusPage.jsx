@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Stepper from "./Stepper";
 import "../css/StatusPage.css";
+import { API_URL } from "../apiConfig"; 
 
 function StatusPage({ sessionId }) {
   const [jobStatus, setJobStatus] = useState("processing");
@@ -12,7 +13,7 @@ function StatusPage({ sessionId }) {
     const intervalId = setInterval(() => {
       const checkStatus = async () => {
         try {
-          const response = await fetch(`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/status/${sessionId}`);
+          const response = await fetch(`${API_URL}/status/${sessionId}`);
           if (!response.ok) throw new Error("Could not fetch status.");
           
           const data = await response.json();
@@ -53,7 +54,7 @@ function StatusPage({ sessionId }) {
               {/* This checks for the results of the FIRST service */}
               {results?.full_output && (
                 <a 
-                  href={`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/download/${sessionId}/${results.full_output}`}
+                  href={`${API_URL}/download/${sessionId}/${results.full_output}`}
                   className="download-button"
                 >
                   Télécharger le fichier complet
@@ -61,7 +62,7 @@ function StatusPage({ sessionId }) {
               )}
               {results?.summary_report && (
                 <a 
-                  href={`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/download/${sessionId}/${results.summary_report}`}
+                  href={`${API_URL}/download/${sessionId}/${results.summary_report}`}
                   className="download-button summary"
                 >
                   Télécharger le résumé des changements
@@ -71,7 +72,7 @@ function StatusPage({ sessionId }) {
               {/* This checks for the result of the NEW service */}
               {results?.output_file && (
                 <a 
-                  href={`https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/download/${sessionId}/${results.output_file}`}
+                  href={`${API_URL}/download/${sessionId}/${results.output_file}`}
                   className="download-button"
                 >
                   Télécharger le fichier de sortie

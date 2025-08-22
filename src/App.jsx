@@ -8,6 +8,7 @@ import Traitement from "./components/Traitement.jsx";
 import StatusPage from "./components/StatusPage.jsx";
 import CreateColumnPage from "./components/CreateColumnPage.jsx"; // 1. Import the new component
 import Navbar from "./components/Navbar.jsx";
+import { API_URL } from "../apiConfig"; 
 
 function App() {
   const [selected, setSelected] = useState(null);
@@ -22,7 +23,7 @@ function App() {
     setSelectedService(serviceId);
     
     try {
-      const response = await fetch("http://127.0.0.1:8000/start-session");
+      const response = await fetch(`${API_URL}/start-session`);
       if (!response.ok) throw new Error("Failed to start session.");
       const data = await response.json();
       setSelected(data.session_id);

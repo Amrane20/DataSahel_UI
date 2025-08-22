@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Stepper from "./Stepper";
 import "../css/CreateColumnPage.css";
 import DeletIcon from "../assets/delete_icon.svg";
+import { API_URL } from "../apiConfig"; 
 
 // The typo was here. I've corrected "mainFilekey" to "mainFileKey".
 function CreateColumnPage({
@@ -25,7 +26,7 @@ function CreateColumnPage({
     const fetchColumns = async () => {
       try {
         const response = await fetch(
-          `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/columns/${sessionId}`
+          `${API_URL}/columns/${sessionId}`
         );
         if (!response.ok) throw new Error("Failed to fetch columns.");
         const data = await response.json();
@@ -93,7 +94,7 @@ function CreateColumnPage({
     try {
       // Send the single, consolidated request
       const response = await fetch(
-        "https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/services/create-column",
+        `${API_URL}/services/create-column`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

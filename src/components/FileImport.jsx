@@ -6,6 +6,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "../css/FileImport.css";
 import DeletIcon from "../assets/delete_icon.svg";
 import Stepper from "./Stepper"; 
+import { API_URL } from "../apiConfig"; 
 
 // Defining the functional component FileImport, receiving onBack and onNext as props
 function FileImport({ onBack, onNext, sessionId }) {
@@ -25,7 +26,7 @@ function FileImport({ onBack, onNext, sessionId }) {
     formData.append("file", file);
 
     try {
-      const response = await fetch("https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/upload-main-file", {
+      const response = await fetch(`${API_URL}/upload-main-file`, {
         method: "POST",
         body: formData,
       });
@@ -50,7 +51,7 @@ function FileImport({ onBack, onNext, sessionId }) {
 
     try {
       const response = await fetch(
-        "https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/set-reference-count",
+        `${API_URL}/set-reference-count`,
         {
           method: "POST",
           body: formData,
@@ -79,7 +80,7 @@ function FileImport({ onBack, onNext, sessionId }) {
 
     try {
       const response = await fetch(
-        "https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/upload-reference-file",
+        `${API_URL}/upload-reference-file`,
         {
           method: "POST",
           body: formData,
@@ -104,7 +105,7 @@ function FileImport({ onBack, onNext, sessionId }) {
 
     try {
       const response = await fetch(
-        `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/delete-main-file/${sessionId}/${mainFileInfo.filename}`,
+        `${API_URL}/delete-main-file/${sessionId}/${mainFileInfo.filename}`,
         { method: "DELETE" }
       );
       if (!response.ok) throw new Error("Failed to delete the file.");
@@ -121,7 +122,7 @@ function FileImport({ onBack, onNext, sessionId }) {
   const handleDeleteRefFile = async (fileToDelete) => {
     try {
       const response = await fetch(
-        `https://literate-parakeet-rxxw79vgj94hw7p-8000.app.github.dev/delete-ref-file/${sessionId}/${fileToDelete.filename}`,
+        `${API_URL}/delete-ref-file/${sessionId}/${fileToDelete.filename}`,
         { method: "DELETE" }
       );
       if (!response.ok) throw new Error("Failed to delete the ref file.");
