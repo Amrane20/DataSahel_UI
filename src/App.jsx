@@ -8,7 +8,7 @@ import Traitement from "./components/Traitement.jsx";
 import StatusPage from "./components/StatusPage.jsx";
 import CreateColumnPage from "./components/CreateColumnPage.jsx"; // 1. Import the new component
 import Navbar from "./components/Navbar.jsx";
-import { API_URL } from "../apiConfig"; 
+import { API_URL } from "./apiConfig"; 
 
 function App() {
   const [selected, setSelected] = useState(null);

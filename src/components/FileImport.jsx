@@ -6,7 +6,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "../css/FileImport.css";
 import DeletIcon from "../assets/delete_icon.svg";
 import Stepper from "./Stepper"; 
-import { API_URL } from "../apiConfig"; 
+import { API_URL } from "./apiConfig"; 
 
 // Defining the functional component FileImport, receiving onBack and onNext as props
 function FileImport({ onBack, onNext, sessionId }) {

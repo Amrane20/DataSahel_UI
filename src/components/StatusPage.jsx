@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Stepper from "./Stepper";
 import "../css/StatusPage.css";
-import { API_URL } from "../apiConfig"; 
+import { API_URL } from "./apiConfig"; 
 
 function StatusPage({ sessionId }) {
   const [jobStatus, setJobStatus] = useState("processing");

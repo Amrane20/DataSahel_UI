@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Stepper from "./Stepper";
 import "../css/CreateColumnPage.css";
 import DeletIcon from "../assets/delete_icon.svg";
-import { API_URL } from "../apiConfig"; 
+import { API_URL } from "./apiConfig";
 
 // The typo was here. I've corrected "mainFilekey" to "mainFileKey".
 function CreateColumnPage({

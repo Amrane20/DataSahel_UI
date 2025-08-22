@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 // Importing the CSS file that styles the ColumnSection component
 import "../css/ColumnSection.css";
 import Stepper from "./Stepper";
-import { API_URL } from "../apiConfig"; 
+import { API_URL } from "./apiConfig";
 
 // Functional component definition, taking onBack and onNext as props
 function ColumnSection({ onBack, onNext, sessionId }) {

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import "../css/Traitement.css";
 import Stepper from "./Stepper";
 import DeletIcon from "../assets/delete_icon.svg";
-import { API_URL } from "../apiConfig"; 
+import { API_URL } from "./apiConfig"; 
 
 // We receive onBack and onNext from the parent component
 function Traitement({ onBack, onNext, sessionId }) {
